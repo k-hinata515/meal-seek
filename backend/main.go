@@ -11,7 +11,7 @@ func main() {
 		c.String(http.StatusOK, "Hello, World!")
 	})
 
-	if err := router.Run(":8080"); err != nil {
+	if err := router.Run(":5174"); err != nil {
 		fmt.Println("Failed to start server:", err)
 	}
 }
