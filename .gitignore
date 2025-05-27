@@ -1,0 +1,29 @@
+# meal-seek-app/.gitignore
+
+# IDE & OS specific
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
+# Dependencies
+backend/vendor/
+frontend/node_modules/ # ◀︎ frontendのnode_modules
+
+# Build output
+frontend/dist/
+backend/tmp/
+backend/meal-seek-backend 
+
+# Environment files
+.env  
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite specific
+frontend/.vite/ 

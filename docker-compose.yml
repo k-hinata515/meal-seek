@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+    frontend:
+        build:
+            context: ./frontend
+        ports:
+            - "6173:5173"
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
+        env_file:
+            - ./.env
+        depends_on:
+            - backend
+
+    backend:
+        build:
+            context: ./backend
+        ports:
+            - "6080:8080"
+        volumes:
+            - ./backend:/app
+        env_file:
+            - ./.env
+        depends_on:
+            db:
+                condition: service_healthy
+
+    db:
+        build:
+            context: ./docker/db
+        ports:
+        - "6306:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+            - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+        env_file:
+            - ./.env
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+            interval: 10s
+            timeout: 10s
+            retries: 5
+
+volumes:
+    db_data:
