@@ -1,11 +1,16 @@
-// frontend/src/hooks/useTimeSlot.ts
-import { useState} from 'react';
-import { type TimeSlot, getCurrentTimeSlot as utilGetCurrentTimeSlot } from '../styles/theme';
+import { useState } from 'react';
 
-export const useTimeSlot = (): TimeSlot => {
-    // アプリ起動時に一度だけ時間帯を判定
-    const [timeSlot] = useState<TimeSlot>(() => utilGetCurrentTimeSlot());
+export type TimeSlot = 'MORNING' | 'DAYTIME' | 'EVENING' | 'NIGHT';
 
-    return timeSlot;
+export const getCurrentTimeSlot = (): TimeSlot => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 10) return 'MORNING';
+    if (hour >= 10 && hour < 17) return 'DAYTIME';
+    if (hour >= 17 && hour < 20) return 'EVENING';
+    return 'NIGHT';
 };
 
+export const useTimeSlot = (): TimeSlot => {
+    const [timeSlot] = useState<TimeSlot>(() => getCurrentTimeSlot());
+    return timeSlot;
+};
