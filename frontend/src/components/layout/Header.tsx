@@ -1,48 +1,38 @@
-import {type AppTheme, type ThemePreference } from '../../styles/theme';
+import { type UserThemePreference } from '../../hooks/useThemeSwitcher';
+import { FaSun, FaMoon } from 'react-icons/fa'; // アイコンライブラリを使用する場合
 
 interface HeaderProps {
-    currentTheme: AppTheme; // 現在適用されているテーマの配色情報
-    themePreference: ThemePreference;
-    onThemePreferenceChange: (preference: ThemePreference) => void;
+    currentThemePreference: UserThemePreference;
+    onThemeToggle: () => void;
 }
 
-const Header = ({ currentTheme, themePreference, onThemePreferenceChange }: HeaderProps) => {
-    const isLoggedIn = false; // ダミー
-
-    const getNextPreference = (): ThemePreference => {
-        if (themePreference === 'TIME_BASED') return 'SYSTEM_LIGHT'; // 時間帯 -> システム(ライト)
-        if (themePreference === 'SYSTEM_LIGHT') return 'SYSTEM_DARK'; // システム(ライト) -> システム(ダーク)
-        return 'TIME_BASED'; // システム(ダーク) -> 時間帯
-    };
-
-    const getPreferenceLabel = () => {
-        if (themePreference === 'TIME_BASED') return '時間帯連動';
-        if (themePreference === 'SYSTEM_LIGHT') return 'ライトテーマ';
-        if (themePreference === 'SYSTEM_DARK') return 'ダークテーマ';
-        return '';
-    };
+const Header = ({ currentThemePreference, onThemeToggle }: HeaderProps) => {
+    const isLoggedIn = false; // ダミーログイン状態
 
     return (
-        <header className={`p-4 shadow-md sticky top-0 z-50 ${currentTheme.headerBg} backdrop-blur-md border-b ${currentTheme.headerBorder} transition-colors duration-500`}>
+        <header className="app-header">
         <div className="container mx-auto flex justify-between items-center">
-            <h1 className={`text-2xl font-bold ${currentTheme.heading}`}>MealSeek</h1>
+            <h1 className="app-header-title"> 
+            MealSeek
+            </h1>
             <nav className="flex items-center space-x-4">
             <button
-                onClick={() => onThemePreferenceChange(getNextPreference())}
-                title={`現在のテーマ: ${getPreferenceLabel()} (クリックで切替)`}
-                className={`px-3 py-1.5 text-xs rounded-md ${currentTheme.accent2} ${currentTheme.text === 'text-slate-200' || currentTheme.text === 'text-slate-100' ? 'bg-slate-700 hover:bg-slate-600' :'bg-white hover:bg-gray-100'} border shadow-sm`}
+                onClick={onThemeToggle}
+                title={`テーマを${currentThemePreference === 'LIGHT' ? 'ダーク' : 'ライト'}に切り替え`}
+                className="theme-toggle-button" 
             >
-                {getPreferenceLabel()}
+                {currentThemePreference === 'LIGHT' ? (
+                <FaMoon className="w-5 h-5" />
+                ) : (
+                <FaSun className="w-5 h-5" />
+                )}
             </button>
             {isLoggedIn ? (
-                <>
-                {/* ... (ログイン済みメニュー) ... */}
-                <button className={`px-3 py-1.5 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-slate-700 ${currentTheme.text}`}>ログアウト</button>
-                </>
+                <button className="app-header-nav-button">ログアウト</button>
             ) : (
                 <>
-                <button className={`px-3 py-1.5 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-slate-700 ${currentTheme.text}`}>ログイン</button>
-                <button className={`px-4 py-1.5 text-sm font-semibold rounded-md shadow-sm ${currentTheme.button} transition-colors duration-300`}>登録</button>
+                <button className="app-header-nav-button">ログイン</button>
+                <button className="app-header-nav-button-primary">登録</button>
                 </>
             )}
             </nav>
