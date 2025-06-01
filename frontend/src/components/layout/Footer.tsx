@@ -1,15 +1,32 @@
-import { type AppTheme } from '../../styles/theme';
+import type { UserThemePreference } from '../../hooks/useThemeSwitcher'; 
+import { FaSun, FaMoon } from 'react-icons/fa'; 
 
 interface FooterProps {
-    currentTheme: AppTheme;
+    currentThemePreference: UserThemePreference; 
 }
 
-const Footer = ({ currentTheme }: FooterProps) => {
+const Footer = ({ currentThemePreference }: FooterProps) => {
+    const isDarkTheme = currentThemePreference === 'DARK';
+    const year = new Date().getFullYear();
+    const appName = "MealSeek"; 
+
     return (
-        <footer className={`text-center p-4 border-t ${currentTheme.headerBorder} ${currentTheme.headerBg.replace('/80','/30').replace('/90','/30')} mt-auto backdrop-blur-sm transition-colors duration-500`}>
-            <p className={`text-xs ${currentTheme.text === 'text-slate-200' || currentTheme.text === 'text-slate-100' ? 'text-slate-500' : 'text-gray-500'}`}>
-                &copy; {new Date().getFullYear()} MealSeek. All rights reserved.
+        <footer className="app-footer"> 
+        <div className="container mx-auto flex flex-col items-center justify-center space-y-2 py-4 md:py-6">
+            <div className="mb-2">
+            {isDarkTheme ? (
+                <FaMoon className="w-6 h-6 text-dark-accent opacity-80" />
+            ) : (
+                <FaSun className="w-6 h-6 text-light-accent opacity-80" />
+            )}
+            </div>
+            <p className="text-sm font-medium">
+            お探しのレストランを、{appName}で見つけましょう。
             </p>
+            <p className="opacity-80"> 
+            &copy; {year} {appName}. All rights reserved.
+            </p>
+        </div>
         </footer>
     );
 };
