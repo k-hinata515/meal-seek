@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './components/layout/MainLayout';
-import SearchPage from './pages/SearchInputPage';
+import SearchPage from './pages/SearchPage';
 function App() {
   return (
     <Router>
