@@ -23,10 +23,10 @@ export const ALL_GENRE_TAGS: FilterOption[] = [
 
 // 時間帯別おすすめジャンルコードの定義
 export const TIME_BASED_RECOMMENDED_GENRE_CODES: Record<TimeSlot, string[]> = {
-  MORNING: ['G014'], // カフェ・スイーツ
-  DAYTIME: ['G005', 'G006', 'G013'], // 洋食, イタリアン・フレンチ, ラーメン
-  EVENING: ['G001', 'G002', 'G008'], // 居酒屋, ダイニングバー・バル, 焼肉・ホルモン
-  NIGHT: ['G012', 'G001'], // バー・カクテル, 居酒屋
+  MORNING: ['G014'], 
+  DAYTIME: ['G005', 'G006', 'G013'], 
+  EVENING: ['G001', 'G002', 'G008'], 
+  NIGHT: ['G012', 'G001'], 
 };
 
 export const RADIUS_OPTIONS_DATA: FilterOption[] = [
