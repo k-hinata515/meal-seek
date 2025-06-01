@@ -5,7 +5,7 @@ import { type TimeSlot } from '../hooks/useTimeSlot';
 // 全ジャンルデータ 
 export const ALL_GENRE_TAGS: FilterOption[] = [
     { id: 'g001', label: '居酒屋', code: 'G001' },
-    { id: 'g002', label: '', code: 'G002'},
+    { id: 'g002', label: 'うどん', code: 'G002'},
     { id: 'g003', label: '創作料理', code: 'G003' }, 
     { id: 'g004', label: '和食', code: 'G004' },
     { id: 'g005', label: '洋食', code: 'G005' },
