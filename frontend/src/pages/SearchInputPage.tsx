@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { type SearchParams } from '../types/types';
+import { type SearchParams } from '../types/search';
 import { ALL_GENRE_TAGS as allGenreTagsDataFromTheme , RADIUS_OPTIONS_DATA } from '../test/search_data';
 
 import KeywordSearchInput from '../features/search/components/KeywordSearchField';

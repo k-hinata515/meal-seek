@@ -1,4 +1,4 @@
-import { type FilterOption } from '../../../types/types'; 
+import { type FilterOption } from '../../../types/search'; 
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
 interface RadiusFilterProps {

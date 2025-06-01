@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { type FilterOption} from '../../../types/types';
+import { type FilterOption} from '../../../types/search';
 import { FaTags } from 'react-icons/fa'; 
 
 interface GenreFilterProps {
