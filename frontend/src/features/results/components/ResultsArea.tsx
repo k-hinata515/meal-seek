@@ -96,7 +96,7 @@ const ResultsArea = ({
             <ShopList
             shops={shops}
             onShopSelect={onShopSelect}
-            hasMore={hasMore}
+            isMore={hasMore}
             onLoadMore={onLoadMore}
             isLoadingMore={isLoadingMore}
             />
