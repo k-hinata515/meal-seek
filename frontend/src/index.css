@@ -1,182 +1,202 @@
+/* frontend/src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-    html {
-        @apply transition-colors duration-300 ease-in-out antialiased;
-    }
-    /* ライトモードのデフォルトスタイル */
-    html:not(.dark) {
-        @apply bg-light-bg text-light-text;
-    }
-    /* ダークモードのスタイル (html.dark が付与された場合) */
-    html.dark {
-        @apply bg-dark-bg text-dark-text;
-    }
+  html {
+    @apply transition-colors duration-300 ease-in-out antialiased;
+  }
+  /* ライトモードのデフォルトスタイル */
+  html:not(.dark) {
+    @apply bg-light-bg text-light-text;
+  }
+  /* ダークモードのスタイル (html.dark が付与された場合) */
+  html.dark {
+    @apply bg-dark-bg text-dark-text;
+  }
 
-    /* 基本的なフォーカスリング (ライト/ダークで色を分ける) */
-    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-        @apply outline-none ring-2 ring-offset-2;
-    }
-    html:not(.dark) button:focus-visible, html:not(.dark) a:focus-visible, html:not(.dark) input:focus-visible, html:not(.dark) select:focus-visible, html:not(.dark) textarea:focus-visible {
-        @apply ring-light-accent ring-offset-light-bg;
-    }
-    html.dark button:focus-visible, html.dark a:focus-visible, html.dark input:focus-visible, html.dark select:focus-visible, html.dark textarea:focus-visible {
-        @apply ring-dark-accent ring-offset-dark-bg;
-    }
+  /* 基本的なフォーカスリング (ライト/ダークで色を分ける) */
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    @apply outline-none ring-2 ring-offset-2;
+  }
+  html:not(.dark) button:focus-visible, html:not(.dark) a:focus-visible, html:not(.dark) input:focus-visible, html:not(.dark) select:focus-visible, html:not(.dark) textarea:focus-visible {
+    @apply ring-light-accent ring-offset-light-bg;
+  }
+  html.dark button:focus-visible, html.dark a:focus-visible, html.dark input:focus-visible, html.dark select:focus-visible, html.dark textarea:focus-visible {
+    @apply ring-dark-accent ring-offset-dark-bg;
+  }
 }
 
 @layer components {
-    /* --- Header Styles --- */
-    .app-header {
-        @apply p-4 shadow-md sticky top-0 z-50 backdrop-blur-md border-b transition-colors duration-300;
-    }
-    html:not(.dark) .app-header { @apply bg-light-header-bg border-light-header-border; }
-    html.dark .app-header { @apply bg-dark-header-bg border-dark-header-border; }
+  /* --- ヘッダースタイル --- */
+  .app-header {
+    @apply p-4 shadow-md sticky top-0 z-50 backdrop-blur-md border-b transition-colors duration-300;
+  }
+  html:not(.dark) .app-header { @apply bg-light-header-bg border-light-header-border; }
+  html.dark .app-header { @apply bg-dark-header-bg border-dark-header-border; }
 
-    .app-header-title { @apply text-2xl font-bold; }
-    html:not(.dark) .app-header-title { @apply text-light-heading; }
-    html.dark .app-header-title { @apply text-dark-heading; }
+  .app-header-title { @apply text-2xl font-bold; }
+  html:not(.dark) .app-header-title { @apply text-light-heading; }
+  html.dark .app-header-title { @apply text-dark-heading; }
 
-    .theme-toggle-button {
-        @apply p-2 rounded-full transition-colors;
-        @apply hover:bg-gray-200 dark:hover:bg-slate-700; /* 基本的なホバー */
-    }
-    /* アイコンの色はJSX側で theme に応じて設定 */
+  .theme-toggle-button { /* ヘッダーのテーマ切り替えボタン */
+    @apply p-2 rounded-full transition-colors;
+    @apply hover:bg-gray-200 dark:hover:bg-slate-700;
+  }
 
-    .app-header-nav-button {
-        @apply px-3 py-1.5 text-sm rounded-md;
-        @apply text-light-text hover:bg-gray-100;
-        @apply dark:text-dark-text dark:hover:bg-slate-700;
-    }
-    .app-header-nav-button-primary {
-        @apply px-4 py-1.5 text-sm font-semibold rounded-md shadow-sm transition-colors duration-300;
-        @apply bg-light-accent text-white hover:opacity-90;
-        @apply dark:bg-dark-accent dark:text-dark-bg dark:hover:opacity-90;
-    }
+  .app-header-nav-button { /* ヘッダーの通常ナビゲーションボタン */
+    @apply px-3 py-1.5 text-sm rounded-md;
+    @apply text-light-text hover:bg-gray-100;
+    @apply dark:text-dark-text dark:hover:bg-slate-700;
+  }
+  .app-header-nav-button-primary { /* ヘッダーの主要ナビゲーションボタン */
+    @apply px-4 py-1.5 text-sm font-semibold rounded-md shadow-sm transition-colors duration-300;
+    @apply bg-light-accent text-white hover:opacity-90;
+    @apply dark:bg-dark-accent dark:text-dark-bg dark:hover:opacity-90;
+  }
 
-    /* --- Footer Styles --- */
-    .app-footer {
-        @apply text-center p-4 border-t mt-auto backdrop-blur-sm transition-colors duration-300 text-xs opacity-80;
-    }
-    html:not(.dark) .app-footer { @apply bg-light-footer-bg border-light-header-border text-light-footer-text; }
-    html.dark .app-footer { @apply bg-dark-footer-bg dark:border-dark-header-border dark:text-dark-footer-text; }
+  /* --- フッタースタイル --- */
+  .app-footer {
+    @apply text-center p-4 border-t mt-auto backdrop-blur-sm transition-colors duration-300 text-xs opacity-80;
+  }
+  html:not(.dark) .app-footer { @apply bg-light-footer-bg border-light-header-border text-light-footer-text; }
+  html.dark .app-footer { @apply bg-dark-footer-bg dark:border-dark-header-border dark:text-dark-footer-text; }
 
-    /* --- Search Area Card Style --- */
-    .search-card {
-        @apply p-4 md:p-6 rounded-xl shadow-xl border transition-all;
-        @apply bg-white border-gray-200;
-        @apply dark:bg-slate-800 dark:border-slate-700;
-    }
+  /* --- 検索エリアカードスタイル --- */
+  .search-card {
+    @apply p-4 md:p-6 rounded-xl shadow-xl border transition-all;
+    @apply bg-white border-gray-200; /* ライトモードのデフォルト */
+    @apply dark:bg-slate-800 dark:border-slate-700; /* ダークモード */
+  }
 
-    /* --- Search Page Specific Styles --- */
-    .search-page-heading { @apply font-bold; } /* サイズはJSX側で text-3xl md:text-4xl と指定 */
-    html:not(.dark) .search-page-heading { @apply text-light-heading; }
-    html.dark .search-page-heading { @apply text-dark-heading; }
+  /* --- 検索ページ特有スタイル --- */
+  .search-page-heading { @apply font-bold; } /* サイズはJSX側で指定 */
+  html:not(.dark) .search-page-heading { @apply text-light-heading; }
+  html.dark .search-page-heading { @apply text-dark-heading; }
 
-    .search-input-base { /* キーワード入力欄の基本 */
-        @apply w-full p-3 pl-10 text-base md:text-lg rounded-md shadow-sm border transition-colors duration-150 focus:outline-none;
-    }
-    .search-input-themed { /* テーマ別スタイル */
-    }
-    html:not(.dark) .search-input-themed { @apply bg-light-input-bg text-light-text placeholder-gray-400 border-gray-300 focus:ring-1 focus:ring-light-input-focus-border focus:border-light-input-focus-border; }
-    html.dark .search-input-themed { @apply bg-dark-input-bg text-dark-text placeholder-slate-400 dark:border-slate-600 focus:ring-1 focus:ring-dark-input-focus-border focus:border-dark-input-focus-border; }
+  .search-input-base { /* キーワード入力欄の基本 */
+      @apply w-full p-3 pl-10 text-base md:text-lg rounded-md shadow-sm border transition-colors duration-150 focus:outline-none;
+  }
+  .search-input-themed { /* テーマ別スタイル */
+  }
+  html:not(.dark) .search-input-themed { @apply bg-light-input-bg text-light-text placeholder-gray-400 border-gray-300 focus:ring-1 focus:ring-light-input-focus-border focus:border-light-input-focus-border; }
 
-    /* --- Tag Button Styles (共通) --- */
-    .tag-button {
-        @apply px-3.5 py-1.5 text-sm rounded-full shadow-md border transition-all duration-150 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-70;
-    }
-    .tag-button-sm { /* モーダル内など、少し小さいタグ用 */
-        @apply px-3 py-1 text-xs rounded-full shadow-sm border transition-all duration-150 transform hover:scale-105 focus:outline-none focus:ring-1 focus:ring-opacity-60;
-    }
+  html:not(.dark) .search-input-base { /* ライトテーマ */
+    @apply bg-light-input-bg text-light-text placeholder-gray-400 border-gray-300 focus:ring-1 focus:ring-light-input-focus-border focus:border-light-input-focus-border;
+  }
+  html.dark .search-input-base { /* ダークテーマ */
+    @apply bg-dark-input-bg text-dark-text placeholder-slate-400 border-dark-border focus:ring-1 focus:ring-dark-input-focus-border focus:border-dark-input-focus-border;
+  }
 
-    /* Recommended/Selected Tag Styles */
-    .tag-button.recommended { @apply font-medium border-transparent; }
-    html:not(.dark) .tag-button.recommended { @apply bg-light-tag-bg text-light-tag-text; }
-    html:not(.dark) .tag-button.recommended.selected { @apply bg-light-accent text-white ring-light-accent ring-offset-2 ring-offset-light-bg; }
-    html.dark .tag-button.recommended { @apply bg-dark-tag-bg text-dark-tag-text; }
-    html.dark .tag-button.recommended.selected { @apply bg-dark-accent text-dark-bg ring-dark-accent ring-offset-2 ring-offset-dark-bg; }
+  /* --- タグボタンスタイル (共通) --- */
+  .tag-button {
+    @apply px-3.5 py-1.5 text-sm rounded-full shadow-md border transition-all duration-150 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-70;
+  }
+  .tag-button-sm { /* モーダル内など、少し小さいタグ用 */
+    @apply px-3 py-1 text-xs rounded-full shadow-sm border transition-all duration-150 transform hover:scale-105 focus:outline-none focus:ring-1 focus:ring-opacity-60;
+  }
 
-    /* Action/Filter Tag Styles (ジャンル、距離など) */
-    .tag-button.filter { @apply font-medium; }
-    html:not(.dark) .tag-button.filter { @apply bg-white border-gray-300 text-gray-700 hover:bg-gray-50; }
-    html:not(.dark) .tag-button.filter.selected { @apply bg-light-accent text-white ring-light-accent ring-offset-2 ring-offset-light-bg; }
-    html.dark .tag-button.filter { @apply bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600; }
-    html.dark .tag-button.filter.selected { @apply bg-dark-accent text-dark-bg ring-dark-accent ring-offset-2 ring-offset-dark-bg; }
+  /* 推奨/選択済みタグのスタイル */
+  .tag-button.recommended { @apply font-medium border-transparent; }
+  html:not(.dark) .tag-button.recommended { @apply bg-light-tag-bg text-light-tag-text; }
+  html:not(.dark) .tag-button.recommended.selected { @apply bg-light-accent text-white ring-light-accent ring-offset-2 ring-offset-light-bg; }
+  html.dark .tag-button.recommended { @apply bg-dark-tag-bg text-dark-tag-text; }
+  html.dark .tag-button.recommended.selected { @apply bg-dark-accent text-dark-bg ring-dark-accent ring-offset-2 ring-offset-dark-bg; }
 
-    /* 「もっと見る」ボタン用 */
-    .more-genres-button {
-        @apply text-sm font-medium px-3 py-1.5 rounded-full border border-dashed transition-colors;
-        @apply border-gray-400 text-gray-600 hover:bg-gray-100 hover:border-gray-500;
-        @apply dark:border-slate-600 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:border-slate-500;
-    }
+  /* アクション/フィルタータグのスタイル (ジャンル、距離など) */
+  .tag-button.filter { @apply font-medium; }
+  html:not(.dark) .tag-button.filter { @apply bg-white border-gray-300 text-gray-700 hover:bg-gray-50; }
+  html:not(.dark) .tag-button.filter.selected { @apply bg-light-accent text-white ring-light-accent ring-offset-2 ring-offset-light-bg; }
+  html.dark .tag-button.filter { @apply bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600; }
+  html.dark .tag-button.filter.selected { @apply bg-dark-accent text-dark-bg ring-dark-accent ring-offset-2 ring-offset-dark-bg; }
 
-    /* Selected Filter Display Tags */
-    .selected-filter-display-tag { @apply flex items-center px-2.5 py-1 rounded-full text-xs font-medium border; }
-    .selected-filter-display-tag-keyword { @apply bg-green-100 text-green-800 border-green-300 dark:bg-green-800/30 dark:text-green-300 dark:border-green-700/50; }
-    .selected-filter-display-tag-genre { @apply bg-sky-100 text-sky-800 border-sky-300 dark:bg-sky-800/30 dark:text-sky-300 dark:border-sky-700/50; }
-    .selected-filter-display-tag-radius { @apply bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-800/30 dark:text-purple-300 dark:border-purple-700/50; }
+  /* 「もっと見る」ボタン用 */
+  .more-genres-button {
+    @apply text-sm font-medium px-3 py-1.5 rounded-full border border-dashed transition-colors;
+    @apply border-gray-400 text-gray-600 hover:bg-gray-100 hover:border-gray-500;
+    @apply dark:border-slate-600 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:border-slate-500;
+  }
 
-    /* Search Submit Button */
-    .search-submit-button { @apply px-10 py-3 text-lg font-semibold rounded-lg shadow-md transition-colors duration-150 disabled:opacity-50 w-full; }
-    html:not(.dark) .search-submit-button { @apply bg-light-accent text-white hover:opacity-90; }
-    html.dark .search-submit-button { @apply bg-dark-accent text-dark-bg hover:opacity-90; }
+  /* 選択中フィルター表示タグ */
+  .selected-filter-display-tag { @apply flex items-center px-2.5 py-1 rounded-full text-xs font-medium border; }
+  .selected-filter-display-tag-keyword { @apply bg-green-100 text-green-800 border-green-300 dark:bg-green-700/30 dark:text-green-300 dark:border-green-600/50; }
+  .selected-filter-display-tag-genre { @apply bg-sky-100 text-sky-800 border-sky-300 dark:bg-sky-700/30 dark:text-sky-300 dark:border-sky-600/50; }
+  .selected-filter-display-tag-radius { @apply bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-700/30 dark:text-purple-300 dark:border-purple-600/50; }
 
-    /* Scrollbar */
-    .scrollbar-thin::-webkit-scrollbar { @apply w-1.5 h-1.5; }
-    .scrollbar-thin::-webkit-scrollbar-track { @apply bg-transparent; }
-    .scrollbar-thin::-webkit-scrollbar-thumb { @apply rounded-full; }
-    html:not(.dark) .scrollbar-thin::-webkit-scrollbar-thumb { @apply bg-gray-300 hover:bg-gray-400; }
-    html.dark .scrollbar-thin::-webkit-scrollbar-thumb { @apply bg-slate-700 hover:bg-slate-600; }
+  /* 検索実行ボタン */
+  .search-submit-button { @apply px-10 py-3 text-lg font-semibold rounded-lg shadow-md transition-colors duration-150 disabled:opacity-50 w-full; }
+  html:not(.dark) .search-submit-button { @apply bg-light-accent text-white hover:opacity-90; }
+  html.dark .search-submit-button { @apply bg-dark-accent text-dark-bg hover:opacity-90; }
 
-    /* Modal Styles */
-    .modal-overlay { @apply fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100] p-4; }
-    .modal-content { @apply p-5 md:p-6 rounded-lg shadow-xl max-w-md w-full max-h-[80vh] flex flex-col;
-                    @apply bg-light-card-bg dark:bg-dark-card-bg; /* カード背景色を流用 */
-    }
-    .modal-header { @apply flex justify-between items-center mb-4; }
-    .modal-title { @apply text-xl font-semibold;
-                    @apply text-light-heading dark:text-dark-heading;
-    }
-    .modal-close-button { @apply text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200; }
-    .modal-body { @apply flex-grow overflow-y-auto space-y-1 pr-2; /* scrollbar-thinはここで直接適用せず、個別の要素に */ }
-    .modal-body-item-button { @apply w-full text-left px-3 py-2 rounded-md text-sm transition-colors; }
-    html:not(.dark) .modal-body-item-button.selected { @apply bg-light-accent text-white; }
-    html:not(.dark) .modal-body-item-button:hover:not(.selected) { @apply bg-gray-100; }
-    html.dark .modal-body-item-button.selected { @apply bg-dark-accent text-dark-bg; }
-    html.dark .modal-body-item-button:hover:not(.selected) { @apply bg-slate-700; }
-    .modal-footer { @apply mt-6 text-right; }
-    .modal-footer-button { @apply px-4 py-2 text-sm rounded-md;
-                            @apply bg-gray-200 hover:bg-gray-300 dark:bg-slate-600 dark:hover:bg-slate-500;
-    }
+  /* スクロールバー */
+  .scrollbar-thin::-webkit-scrollbar { @apply w-1.5 h-1.5; }
+  .scrollbar-thin::-webkit-scrollbar-track { @apply bg-transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { @apply rounded-full; }
+  html:not(.dark) .scrollbar-thin::-webkit-scrollbar-thumb { @apply bg-gray-300 hover:bg-gray-400; }
+  html.dark .scrollbar-thin::-webkit-scrollbar-thumb { @apply bg-slate-700 hover:bg-slate-600; }
 
-    /* ResultsArea & ShopCard Styles */
-    .results-tab-button { @apply px-4 py-2 border transition-colors; }
-    .results-tab-button-list { @apply rounded-l-lg; }
-    .results-tab-button-map { @apply rounded-r-lg border-l-0; }
-    html:not(.dark) .results-tab-button { @apply border-light-border bg-white text-light-text hover:bg-gray-50; }
-    html:not(.dark) .results-tab-button.selected { @apply bg-light-accent text-white; }
-    html.dark .results-tab-button { @apply border-dark-border bg-dark-card-bg text-dark-text hover:bg-slate-600; }
-    html.dark .results-tab-button.selected { @apply bg-dark-accent text-dark-bg; }
+  /* モーダルスタイル */
+  .modal-overlay { @apply fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100] p-4; }
+  .modal-content { 
+    @apply p-5 md:p-6 rounded-lg shadow-xl max-w-md w-full max-h-[80vh] flex flex-col;
+    @apply bg-light-card-bg dark:bg-dark-card-bg;
+  }
+  .modal-header { @apply flex justify-between items-center mb-4; }
+  .modal-title { 
+    @apply text-xl font-semibold;
+    @apply text-light-heading dark:text-dark-heading;
+  }
+  .modal-close-button { @apply text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200; }
+  .modal-body { @apply flex-grow overflow-y-auto space-y-1 pr-2; /* scrollbar-thinはここで直接適用せず、要素に付与 */ }
+  .modal-body-item-button { @apply w-full text-left px-3 py-2 rounded-md text-sm transition-colors; }
+  html:not(.dark) .modal-body-item-button.selected { @apply bg-light-accent text-white; }
+  html:not(.dark) .modal-body-item-button:not(.selected):hover { @apply bg-gray-100; } /* :not(.selected) を追加 */
+  html.dark .modal-body-item-button.selected { @apply bg-dark-accent text-dark-bg; }
+  html.dark .modal-body-item-button:not(.selected):hover { @apply bg-slate-700; } /* :not(.selected) を追加 */
 
-    .shop-card-base { @apply p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow; }
-    html:not(.dark) .shop-card-themed { @apply bg-light-card-bg border border-light-border; }
-    html.dark .shop-card-themed { @apply bg-dark-card-bg border border-dark-border; }
+  .modal-footer { @apply mt-6 text-right; }
+  .modal-footer-button { 
+    @apply px-4 py-2 text-sm rounded-md;
+    @apply bg-gray-200 hover:bg-gray-300 dark:bg-slate-600 dark:hover:bg-slate-500;
+  }
 
-    .shop-card-title-text { @apply font-semibold text-lg; }
-    html:not(.dark) .shop-card-title-text { @apply text-light-heading; }
-    html.dark .shop-card-title-text { @apply text-dark-heading; }
+  /*  --- 検索結果タブスタイル --- */
+  .results-tab-button { @apply px-4 py-2 border font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-opacity-70; }
+  .results-tab-button-list { @apply rounded-l-lg; }
+  .results-tab-button-map { @apply rounded-r-lg md:border-l-0; }
+  html:not(.dark) .results-tab-button { @apply border-light-border bg-white text-light-text hover:bg-gray-50; }
+  html:not(.dark) .results-tab-button.selected { @apply bg-light-accent text-white border-light-accent; }
+  html.dark .results-tab-button { @apply border-dark-border bg-dark-card-bg text-dark-text hover:bg-slate-600; }
+  html.dark .results-tab-button.selected { @apply bg-dark-accent text-dark-bg border-dark-accent; }
 
-    .shop-card-genre-text { @apply text-sm opacity-75; } /* テーマによらずopacityで調整 */
-    html:not(.dark) .shop-card-genre-text { @apply text-light-text; } /* text-light-tag-text なども可 */
-    html.dark .shop-card-genre-text { @apply text-dark-text; } /* text-dark-tag-text なども可 */
+  .shop-card-base { @apply p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow; }
+  html:not(.dark) .shop-card-themed { @apply bg-light-card-bg border border-light-border; }
+  html.dark .shop-card-themed { @apply bg-dark-card-bg border border-dark-border; }
 
-    .shop-card-access-text { @apply text-xs mt-1; }
-    html:not(.dark) .shop-card-access-text { @apply text-gray-500; }
-    html.dark .shop-card-access-text { @apply text-slate-400; }
+  .shop-card-title-text { @apply font-semibold text-lg; }
+  html:not(.dark) .shop-card-title-text { @apply text-light-heading; }
+  html.dark .shop-card-title-text { @apply text-dark-heading; }
 
-    .shop-card-detail-button { @apply mt-3 w-full py-2 text-sm rounded-md; }
-    html:not(.dark) .shop-card-detail-button { @apply bg-light-accent text-white hover:opacity-90; }
-    html.dark .shop-card-detail-button { @apply bg-dark-accent text-dark-bg hover:opacity-90; }
+  .shop-card-genre-text { @apply text-sm opacity-75; }
+  html:not(.dark) .shop-card-genre-text { @apply text-light-text; }
+  html.dark .shop-card-genre-text { @apply text-dark-text; }
+
+  .shop-card-access-text { @apply text-xs mt-1; }
+  html:not(.dark) .shop-card-access-text { @apply text-gray-500; }
+  html.dark .shop-card-access-text { @apply text-slate-400; }
+
+  .shop-card-detail-button { @apply mt-3 w-full py-2 text-sm rounded-md; }
+  html:not(.dark) .shop-card-detail-button { @apply bg-light-accent text-white hover:opacity-90; }
+  html.dark .shop-card-detail-button { @apply bg-dark-accent text-dark-bg hover:opacity-90; }
+
+  /* --- マップスタイル --- */
+  .custom-leaflet-div-icon {
+      background: transparent !important;
+      border: none !important;
+  }
+
+  .custom-map-pin .absolute {
+      z-index: 10;
+  }
 }
