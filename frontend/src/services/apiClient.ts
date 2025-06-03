@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { type SearchParams, type ShopType } from '../types/search';
 
 // バックエンドAPIのベースURLを取得
-const API_BASE_URL = import.meta.env.API_SERVER_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 interface ApiSearchResponse {
     shops: ShopType[];
