@@ -18,9 +18,6 @@ interface ResultsAreaProps {
     mapZoom: number;
     searchRadiusCode?: string | null;
     searchCenter?: [number, number] | undefined;
-    hasMore?: boolean;
-    onLoadMore?: () => void;
-    isLoadingMore?: boolean; 
 }
 
 const ResultsArea = ({
@@ -34,9 +31,6 @@ const ResultsArea = ({
     mapZoom,
     searchRadiusCode,
     searchCenter,
-    hasMore,
-    onLoadMore,
-    isLoadingMore,
 }: ResultsAreaProps) => {
 
     const handleTabChange = (newMode: ViewMode) => {
@@ -52,11 +46,11 @@ const ResultsArea = ({
 
     // エラー発生時 (shopsが空、errorが存在する)
     if (error && shops.length === 0) {
-        return <ErrorMessage message={error} title="検索結果の取得エラー" className="my-10" />;
+        return <ErrorMessage message={error} title="情報取得エラー" className="my-10" />;
     }
 
     // 検索結果が0件だった場合
-    if (!isLoading && !error && shops.length === 0) {
+    if (!isLoading && !error && shops.length === 0) { 
         return (
         <div className="text-center p-10 rounded-lg shadow-md bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
             <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -64,9 +58,6 @@ const ResultsArea = ({
             </svg>
             <p className="mt-4 text-lg font-medium text-gray-700 dark:text-slate-300">
             ご指定の条件に合うお店は見つかりませんでした。
-            </p>
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
-            検索条件を変更して、再度お試しください。
             </p>
         </div>
         );
@@ -101,9 +92,6 @@ const ResultsArea = ({
             <ShopList
             shops={shops}
             onShopSelect={onShopSelect}
-            hasMore={hasMore}
-            onLoadMore={onLoadMore}
-            isLoadingMore={isLoadingMore}
             />
         ) : (
             <MapView
