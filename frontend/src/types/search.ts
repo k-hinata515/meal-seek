@@ -15,8 +15,18 @@ export interface ShopType {
         name: string;
         code: string;
     };
-    access: string;
-    photo: string; 
+    mobile_access: string;
+    photo: {
+        pc: {
+            l: string;
+            m: string;
+            s: string;
+        };
+        mobile: {
+            l: string;
+            s: string;
+        };
+    }
     lat: number;
     lng: number;
 }
