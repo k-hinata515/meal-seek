@@ -1,46 +1,44 @@
 import { type ShopType } from '../../../types/search';
-import ShopCard from './ShopCard';
+import ShopCard from '../../results//components/ShopCard';
 
 interface ShopListProps {
     shops: ShopType[];
     onShopSelect: (shopId: string) => void;
-    isMore?: boolean;  
+    hasMore?: boolean;
     onLoadMore?: () => void;
-    isLoadingMore?: boolean;    
+    isLoadingMore?: boolean;
 }
 
 const ShopList = ({
     shops,
     onShopSelect,
-    isMore,
+    hasMore,
     onLoadMore,
     isLoadingMore,
 }: ShopListProps) => {
     if (shops.length === 0 && !isLoadingMore) {
-        return <p className="text-center text-gray-500 dark:text-slate-400 py-10">表示できるお店がありません。</p>;
-        // return null;
+        return null;
     }
 
     return (
-        // TODO:グリッドレイアウトバージョンやってみて良さそうならコメントアウト外す
-        // <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">  
-        
-        //シンプルなリスト表示バージョン
-        <div className="space-y-4 md:space-y-6">
-        {shops.map(shop => (
+        <div className="space-y-4 md:space-y-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {shops.map(shop => (
             <ShopCard
-            key={shop.id}
-            shop={shop}
-            onSelect={onShopSelect}
+                key={shop.id}
+                shop={shop}
+                onSelect={onShopSelect}
             />
-        ))}
+            ))}
+        </div>
 
-        {isMore && onLoadMore && (
-            <div className="mt-6 text-center">
+        {/* 「もっと見る」ボタンと、追加ロード中のスピナー */}
+        {hasMore && onLoadMore && (
+            <div className="mt-8 text-center">
             <button
                 onClick={onLoadMore}
                 disabled={isLoadingMore}
-                className="search-submit-button py-2.5 text-base" 
+                className="search-submit-button py-2.5 px-6 text-base"
             >
                 {isLoadingMore ? (
                 <div className="flex items-center justify-center">
@@ -56,8 +54,9 @@ const ShopList = ({
             </button>
             </div>
         )}
-        {/* {isLoadingMore && <LoadingSpinner text="さらに読み込み中..." className="py-4" />} */}
-        {!isMore && shops.length > 0 && onLoadMore && !isLoadingMore && (
+
+        {/* もっと見るがない場合のメッセージ */}
+        {!hasMore && shops.length > 0 && onLoadMore && !isLoadingMore && (
             <p className="text-center text-sm text-gray-500 dark:text-slate-400 mt-8 py-4 border-t border-dashed border-gray-300 dark:border-slate-700">
             これ以上お店はありません。
             </p>
