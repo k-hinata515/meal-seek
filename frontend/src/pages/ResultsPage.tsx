@@ -19,18 +19,20 @@ const ResultsPage = () => {
     const [parsedSearchParams, setParsedSearchParams] = useState<SearchParams | null>(null);
     const [searchResults, setSearchResults] = useState<ShopType[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isInitialLoading, setIsInitialLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [viewMode, setViewMode] = useState<ViewMode>('list');
     const [mapCenter, setMapCenter] = useState<[number, number]>([34.69, 135.50]);
     const [mapZoom, setMapZoom] = useState<number>(13);
     
     const [currentPage, setCurrentPage] = useState(() => {
-        const pageFromUrl = searchParamsFromURL.get('page');
-        return pageFromUrl ? parseInt(pageFromUrl, 10) : 1;
+    const pageFromUrl = searchParamsFromURL.get('page');
+    return pageFromUrl ? parseInt(pageFromUrl, 10) : 1;
     });
     const [totalResults, setTotalResults] = useState(0);
 
     useEffect(() => {
+        console.log("Effect 1: Parsing URL params - ", searchParamsFromURL.toString());
         const keyword = searchParamsFromURL.get('keyword') || undefined;
         const genreQuery = searchParamsFromURL.get('genre');
         const genreCodes = genreQuery ? genreQuery.split(',') : undefined;
@@ -44,43 +46,52 @@ const ResultsPage = () => {
         const newPageFromUrl = pageFromUrl ? parseInt(pageFromUrl, 10) : 1;
 
         if (!keyword && (!genreCodes || genreCodes.length === 0) && (!lat || !lng) && !radiusCode) {
-        setError("検索条件が指定されていません。");
-        setIsLoading(false);
-        setParsedSearchParams(null);
-        setSearchResults([]);
-        setTotalResults(0);
-        return;
+            setError("検索条件が指定されていません。");
+            setIsLoading(false);
+            setIsInitialLoading(false);
+            setParsedSearchParams(null);
+            setSearchResults([]);
+            setTotalResults(0);
+            return;
         }
-        setParsedSearchParams({ keyword, genreCodes, radiusCode, lat, lng });
-        // URLのページと現在のページが異なれば更新 
-        if (currentPage !== newPageFromUrl) {
-        setCurrentPage(newPageFromUrl);
-        }
-    }, [searchParamsFromURL, currentPage]);
 
-    // 検索実行関数
-    const fetchResults = useCallback(async (paramsToFetch: SearchParams | null, pageToFetch: number) => {
-        if (!paramsToFetch) {
-        setIsLoading(false);
-        setSearchResults([]);
-        setTotalResults(0);
-        return;
+        const newParsedParams: SearchParams = { keyword, genreCodes, radiusCode, lat, lng };
+
+        if (JSON.stringify(newParsedParams) !== JSON.stringify(parsedSearchParams)) {
+        setParsedSearchParams(newParsedParams);
+        setCurrentPage(1);
+        setIsInitialLoading(true);
+        } else if (currentPage !== newPageFromUrl && !isLoading) {
+        setCurrentPage(newPageFromUrl);
+        setIsInitialLoading(false);
+        } else if (!parsedSearchParams && !isLoading) { 
+        setParsedSearchParams(newParsedParams);
+        setCurrentPage(newPageFromUrl);
+        setIsInitialLoading(true);
         }
+    }, [searchParamsFromURL]); 
+
+    //検索実行関数
+    const fetchResults = useCallback(async (paramsToFetch: SearchParams, pageToFetch: number) => {
+        console.log(`Effect 2 Triggered: Fetching page ${pageToFetch} with params`, paramsToFetch);
         setIsLoading(true);
         setError(null);
-        setSearchResults([]);
 
         try {
         const { shops: newShops, totalResults: apiTotalResults } = await searchRestaurantsAPI(paramsToFetch, pageToFetch);
-        setSearchResults(newShops); 
+        setSearchResults(newShops);
         setTotalResults(apiTotalResults);
 
         if (newShops.length > 0) {
-            setMapCenter([newShops[0].lat, newShops[0].lng]);
-            setMapZoom(15);
-        } else if (paramsToFetch.lat && paramsToFetch.lng) {
+            const centerLat = paramsToFetch.lat || newShops[0].lat;
+            const centerLng = paramsToFetch.lng || newShops[0].lng;
+            setMapCenter([centerLat, centerLng]);
+            setMapZoom(pageToFetch === 1 ? 15 : mapZoom);
+        } else if (pageToFetch === 1) {
+            if (paramsToFetch.lat && paramsToFetch.lng) {
             setMapCenter([paramsToFetch.lat, paramsToFetch.lng]);
             setMapZoom(14);
+            }
         }
         } catch (err) {
         console.error("Error in fetchResults:", err);
@@ -89,22 +100,17 @@ const ResultsPage = () => {
         setTotalResults(0);
         } finally {
         setIsLoading(false);
+        setIsInitialLoading(false);
         }
-    }, []);
+    }, [mapZoom]);
 
-    // 検索条件またはページが変更されたらAPI呼び出し
+    // 検索条件またはページが変更されたらデータフェッチ
     useEffect(() => {
         if (parsedSearchParams) {
-        // URLのpageクエリパラメータを現在のcurrentPageと同期させる
-        const currentUrlParams = new URLSearchParams(searchParamsFromURL.toString());
-        const pageInUrl = currentUrlParams.get('page');
-        if (pageInUrl !== currentPage.toString()) {
-            currentUrlParams.set('page', currentPage.toString());
-            setSearchParamsFromURL(currentUrlParams, { replace: true });
-        }
+        console.log("Effect 3: parsedSearchParams or currentPage changed, fetching results. CurrentPage:", currentPage);
         fetchResults(parsedSearchParams, currentPage);
         }
-    }, [parsedSearchParams, currentPage, fetchResults, searchParamsFromURL, setSearchParamsFromURL]);
+    }, [parsedSearchParams, currentPage, fetchResults]);
 
 
     const handleViewModeChange = (newMode: ViewMode) => setViewMode(newMode);
@@ -112,7 +118,10 @@ const ResultsPage = () => {
 
     const handlePageChange = (newPage: number) => {
         if (newPage >= 1 && newPage <= totalPages && newPage !== currentPage) {
-        setCurrentPage(newPage);
+        const newUrlParams = new URLSearchParams(searchParamsFromURL.toString());
+        newUrlParams.set('page', newPage.toString());
+        setSearchParamsFromURL(newUrlParams, { replace: true });
+        setIsInitialLoading(false);
         }
     };
     
@@ -139,7 +148,7 @@ const ResultsPage = () => {
         return parts.length > 0 ? parts.join(' / ') : "お店";
     }, [parsedSearchParams]);
 
-    if (isLoading && searchResults.length === 0 && !error) {
+    if (isInitialLoading && !error) {
         return (
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">
             <LoadingSpinner text="お店を探しています..." />
@@ -157,6 +166,34 @@ const ResultsPage = () => {
         </div>
         );
     }
+    
+    if (!isInitialLoading && !isLoading && !error && totalResults === 0) {
+        return (
+            <div className="w-full space-y-4 md:space-y-6">
+                <div className="px-4 md:px-0">
+                    <RouterLink to="/" className="mb-4 inline-flex items-center text-sm text-blue-600 hover:text-blue-800 dark:text-sky-400 dark:hover:text-sky-300">
+                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+                    検索条件に戻る
+                    </RouterLink>
+                    <h2 className="search-page-heading text-2xl md:text-3xl mb-1">
+                    「{searchCriteriaDisplay}」の検索結果
+                    </h2>
+                    <p className="text-sm text-gray-500 dark:text-slate-400">お店は見つかりませんでした</p>
+                </div>
+                <div className="text-center p-10 rounded-lg shadow-md bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
+                    <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2zm3-9V3a1 1 0 00-1-1H9a1 1 0 00-1 1v2" />
+                    </svg>
+                    <p className="mt-4 text-lg font-medium text-gray-700 dark:text-slate-300">
+                    ご指定の条件に合うお店は見つかりませんでした。
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
+                    検索条件を変更して、再度お試しください。
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="w-full space-y-4 md:space-y-6">
@@ -168,17 +205,16 @@ const ResultsPage = () => {
             <h2 className="search-page-heading text-2xl md:text-3xl mb-1">
             「{searchCriteriaDisplay}」の検索結果
             </h2>
-            {!(isLoading && searchResults.length === 0) && !error && (
             <p className="text-sm text-gray-500 dark:text-slate-400">
-                {totalResults > 0 ? `${totalResults}件中 ${((currentPage - 1) * ITEMS_PER_PAGE) + 1} - ${Math.min(currentPage * ITEMS_PER_PAGE, totalResults)}件を表示` : "お店は見つかりませんでした"}
+            {totalResults > 0 ? `${totalResults}件中 ${((currentPage - 1) * ITEMS_PER_PAGE) + 1} - ${Math.min(currentPage * ITEMS_PER_PAGE, totalResults)}件を表示` : ""}
+            {isLoading && <span className="ml-2">検索中...</span>}
             </p>
-            )}
         </div>
         
         <ResultsArea
-            shops={searchResults} 
-            isLoading={isLoading && searchResults.length === 0}
-            error={null}
+            shops={searchResults}
+            isLoading={isLoading && searchResults.length === 0 && currentPage === 1} 
+            error={error}
             viewMode={viewMode}
             onViewModeChange={handleViewModeChange}
             onShopSelect={handleShopSelect}
@@ -195,7 +231,7 @@ const ResultsPage = () => {
             <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={handlePageChange}
+            onPageChange={isLoading ? () => {} : handlePageChange}
             />
         )}
         </div>
