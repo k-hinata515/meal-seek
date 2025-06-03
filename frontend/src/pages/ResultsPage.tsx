@@ -24,7 +24,6 @@ const ResultsPage = () => {
     const [totalResults, setTotalResults] = useState(0);
 
     useEffect(() => {
-        console.log("ResultsPage: URL Search Params changed:", searchParamsFromURL.toString());
         const keyword = searchParamsFromURL.get('keyword') || undefined;
         const genreQuery = searchParamsFromURL.get('genre');
         const genreCodes = genreQuery ? genreQuery.split(',') : undefined;
@@ -55,12 +54,13 @@ const ResultsPage = () => {
 
         setIsLoading(true);
         setError(null);
-        if (pageToFetch === 1) setSearchResults([]);
+        if (pageToFetch === 1) {
+            setSearchResults([]);
+        }
 
         console.log(`ResultsPage: Fetching results (page ${pageToFetch}):`, paramsToFetch);
 
         try {
-        
         const { shops: newShops, totalResults: apiTotalResults } = await searchRestaurantsAPI(paramsToFetch, pageToFetch);
 
         if (pageToFetch === 1) {
@@ -73,8 +73,8 @@ const ResultsPage = () => {
         if (newShops.length > 0 && pageToFetch === 1) {
             setMapCenter([newShops[0].lat, newShops[0].lng]);
             setMapZoom(15);
-        } else if (newShops.length === 0 && pageToFetch === 1) {
-            if (paramsToFetch.lat && paramsToFetch.lng) {
+        } else if (newShops.length === 0 && pageToFetch === 1) { // 初回検索で結果0件
+            if (paramsToFetch.lat && paramsToFetch.lng) { // 検索時の緯度経度があればそこを中心にする
             setMapCenter([paramsToFetch.lat, paramsToFetch.lng]);
             setMapZoom(14);
             }
@@ -82,8 +82,8 @@ const ResultsPage = () => {
         } catch (err) {
         console.error("Error in fetchResults:", err);
         setError(err instanceof Error ? err.message : '検索結果の取得中に不明なエラーが発生しました。');
-        setSearchResults([]); 
-        setTotalResults(0); 
+        setSearchResults([]);
+        setTotalResults(0);
         } finally {
         setIsLoading(false);
         }
@@ -135,8 +135,7 @@ const ResultsPage = () => {
     if (isLoading && currentPage === 1 && !error) {
         return (
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">
-            <LoadingSpinner />
-            <p className="mt-4 text-lg text-gray-600 dark:text-slate-400">お店を探しています...</p>
+            <LoadingSpinner text="お店を探しています..." />
         </div>
         );
     }
@@ -145,7 +144,11 @@ const ResultsPage = () => {
         return (
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-4">
             <ErrorMessage message={error} title="検索エラー" />
-            <RouterLink to="/" className="mt-6 px-6 py-2 rounded-md text-sm font-medium transition-colors bg-light-accent text-white hover:opacity-90 dark:bg-dark-accent dark:text-dark-bg dark:hover:opacity-90">
+            <RouterLink
+            to="/"
+            className="mt-6 px-6 py-2 rounded-md text-sm font-medium transition-colors 
+                        app-button-primary"
+            >
             検索条件に戻る
             </RouterLink>
         </div>
@@ -155,20 +158,27 @@ const ResultsPage = () => {
     return (
         <div className="w-full space-y-4 md:space-y-6">
         <div className="px-4 md:px-0">
-            <RouterLink to="/" className="mb-4 inline-flex items-center text-sm text-blue-600 hover:text-blue-800 dark:text-sky-400 dark:hover:text-sky-300">
+            <RouterLink
+            to="/"
+            className="mb-4 inline-flex items-center text-sm text-blue-600 hover:text-blue-800 dark:text-sky-400 dark:hover:text-sky-300"
+            >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
             検索条件に戻る
             </RouterLink>
             <h2 className="search-page-heading text-2xl md:text-3xl mb-1">
             「{searchCriteriaDisplay}」の検索結果
             </h2>
-            {!(isLoading && currentPage === 1) && !error && <p className="text-sm text-gray-500 dark:text-slate-400">{totalResults}件のお店が見つかりました</p>}
+            {!(isLoading && currentPage === 1) && !error && (
+            <p className="text-sm text-gray-500 dark:text-slate-400">
+                {totalResults > 0 ? `${totalResults}件のお店が見つかりました` : "お店は見つかりませんでした"}
+            </p>
+            )}
         </div>
 
         <ResultsArea
             shops={searchResults}
             isLoading={isLoading && currentPage === 1}
-            error={null} 
+            error={null}
             viewMode={viewMode}
             onViewModeChange={handleViewModeChange}
             onShopSelect={handleShopSelect}
@@ -178,7 +188,7 @@ const ResultsPage = () => {
             onLoadMore={handleLoadMore}
             isLoadingMore={isLoading && currentPage > 1}
             searchRadiusCode={parsedSearchParams?.radiusCode}
-            searchCenter={ 
+            searchCenter={
                 parsedSearchParams?.lat !== undefined && parsedSearchParams?.lng !== undefined
                 ? [parsedSearchParams.lat, parsedSearchParams.lng]
                 : undefined
