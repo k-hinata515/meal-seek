@@ -7,7 +7,6 @@ interface HeaderProps {
 }
 
 const Header = ({ currentThemePreference, onThemeToggle }: HeaderProps) => {
-    const isLoggedIn = false; // ダミーログイン状態
 
     return (
         <header className="app-header">
@@ -27,14 +26,6 @@ const Header = ({ currentThemePreference, onThemeToggle }: HeaderProps) => {
                 <FaSun className="w-5 h-5" />
                 )}
             </button>
-            {isLoggedIn ? (
-                <button className="app-header-nav-button">ログアウト</button>
-            ) : (
-                <>
-                <button className="app-header-nav-button">ログイン</button>
-                <button className="app-header-nav-button-primary">登録</button>
-                </>
-            )}
             </nav>
         </div>
         </header>
