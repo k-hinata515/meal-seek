@@ -61,6 +61,13 @@ type Shop struct {
 	URLs struct {                          // 店舗URL
 		PC string `json:"pc"`
 	} `json:"urls"`
+	Card 	string `json:"card"`          // カード利用可否
+	Wifi	string `json:"wifi"`          // Wi-Fi利用可否
+	NonSmoking string `json:"non_smoking"` // 禁煙席の有無
+	PrivateRoom string `json:"private_room"` // 個室の有無
+	Free_food	string `json:"free_food"`    // 食べ放題の有無
+	FreeDrink	string `json:"free_drink"`	// 飲み放題の有無
+	Parking		string `json:"parking"`      // 駐車場の有無
 }
 
 // ホットペッパーグルメサーチAPIが返すエラー情報の構造
