@@ -79,10 +79,10 @@ const SearchPage = () => {
     <div className="max-w-2xl mx-auto py-8 md:py-12 px-4">
       <div className="text-center mb-10 md:mb-16">
         <h2 className="search-page-heading text-3xl md:text-4xl">
-          お店を探す
+          レストランを探す
         </h2>
         <p className="text-gray-500 dark:text-slate-400 mt-2">
-          キーワードや条件を指定して、お気に入りのお店を見つけましょう。
+          食べに行きたいお店がすぐ見つかる。
         </p>
       </div>
 
